@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>HOME</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-text>
+    <h2>Find events near you</h2>
+  </ion-text>
+
+  <!-- Request location access -->
+  <ion-button expand="block" (click)="getLocation()">Use My Location</ion-button>
+
+  <ion-text class="ion-margin-top ion-margin-bottom">
+    <p>Or search for a location manually:</p>
+  </ion-text>
+
+  <!-- Fallback manual location search -->
+  <ion-item>
+    <ion-input placeholder="Enter a city or town" [(ngModel)]="manualLocation"></ion-input>
+  </ion-item>
+  <ion-button expand="block" (click)="searchManualLocation()">Search</ion-button>
+
+</ion-content>
