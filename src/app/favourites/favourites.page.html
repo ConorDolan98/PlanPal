@@ -1,13 +1,38 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>favourites</ion-title>
+    <ion-title>FAVOURITES</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">favourites</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-card *ngFor="let event of favouriteEvents">
+    <ion-card-header>
+      <ion-card-title>{{ event.name }}</ion-card-title>
+      <ion-card-subtitle>
+        {{ event.dates?.start?.localDate | date: 'mediumDate' }}
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Venue Display -->
+      <p>
+        Venue: {{ event._embedded?.venues?.[0]?.name || 'Venue not available' }}
+      </p>
+
+      <!-- Optional Description -->
+      <p *ngIf="event.description">{{ event.description }}</p>
+
+      <!-- Remove Button -->
+      <ion-button color="danger" expand="block" (click)="removeFromFavourites(event)">
+        Remove from Favourites
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Message if no favourites -->
+  <div *ngIf="favouriteEvents.length === 0">
+    <ion-text color="medium">
+      <p>No favourite events added yet.</p>
+    </ion-text>
+  </div>
 </ion-content>

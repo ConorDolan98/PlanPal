@@ -1,25 +1,28 @@
 import { Component } from '@angular/core';
-import { Geolocation } from '@capacitor/geolocation'; //Geolocation imported for gps tracking
+import { Geolocation } from '@capacitor/geolocation';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [IonicModule, FormsModule],
+  imports: [IonicModule, FormsModule, CommonModule],
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-
 export class HomePage {
   manualLocation: string = '';
   startDate: string = '';
   endDate: string = '';
+  selectedGenre: string = '';
+  showGenreFilter: boolean = false;
+  genre: string = '';
 
   constructor(private router: Router) {}
 
-  //async method waits for geolocation to get position
+  //Async method waits for geolocation
   async getLocation() {
     try {
       const coords = await Geolocation.getCurrentPosition();
@@ -27,14 +30,9 @@ export class HomePage {
       const lon = coords.coords.longitude;
       console.log('Your Location:', lat, lon);
 
-      // sends the latitude and longitude to events page
-      this.router.navigate(['/events'], {
-        queryParams: {
-          latitude: lat,
-          longitude: lon,
-          start: this.startDate,
-          end: this.endDate
-        }
+      this.navigateToEvents({
+        latitude: lat,
+        longitude: lon
       });
 
     } catch (error) {
@@ -43,19 +41,34 @@ export class HomePage {
     }
   }
 
-  // Check to ensure user enters location
+  //Passes data to events page
   goToEvents() {
     if (!this.manualLocation) {
       alert('Please enter a location or use GPS.');
       return;
     }
 
-    this.router.navigate(['/events'], {
-      queryParams: {
-        location: this.manualLocation,
-        start: this.startDate,
-        end: this.endDate
-      }
-    });
+    this.navigateToEvents({ location: this.manualLocation });
+  }
+
+  //method to pass query params to events page
+  private navigateToEvents(baseParams: any) {
+    const queryParams = {
+      ...baseParams,
+      start: this.startDate,
+      end: this.endDate,
+      genre: this.selectedGenre
+    };
+
+    this.router.navigate(['/events'], { queryParams });
+  }
+
+  //Method to show genres
+  enableGenreFilter() {
+    this.showGenreFilter = !this.showGenreFilter;
+  }
+
+  getEventsByGenre() {
+    console.log('Selected Genre:', this.selectedGenre);
   }
 }

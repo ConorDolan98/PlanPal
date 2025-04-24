@@ -15,18 +15,28 @@
           ></ion-input>
         </ion-item>
 
-        <!-- Date Pickers Row -->
-        <div class="date-row">
-          <ion-item class="date-item">
-            <ion-label position="stacked">Start Date</ion-label>
-            <ion-datetime presentation="date" [(ngModel)]="startDate"></ion-datetime>
+        <!-- Buttons to filter by genre -->
+        <ion-button (click)="enableGenreFilter()">
+          Filter by Genre
+        </ion-button>
+        
+        <ion-list *ngIf="showGenreFilter">
+          <ion-item>
+            <ion-label>Genre</ion-label>
+            <ion-select [(ngModel)]="selectedGenre" (ionChange)="getEventsByGenre()">
+              <ion-select-option value="">All</ion-select-option>
+              <ion-select-option value="rock">Rock</ion-select-option>
+              <ion-select-option value="pop">Pop</ion-select-option>
+              <ion-select-option value="comedy">Comedy</ion-select-option>
+              <ion-select-option value="classical">Classical</ion-select-option>
+              <ion-select-option value="sports">Sports</ion-select-option>
+              <ion-select-option value="theatre">Theatre</ion-select-option>
+              <ion-select-option value="hip-hop/rap">Hip-Hop/Rap</ion-select-option>
+              <ion-select-option value="festivals">Festivals</ion-select-option>
+            </ion-select>
           </ion-item>
-
-          <ion-item class="date-item">
-            <ion-label position="stacked">End Date</ion-label>
-            <ion-datetime presentation="date" [(ngModel)]="endDate"></ion-datetime>
-          </ion-item>
-        </div>
+        </ion-list>
+        
 
         <!-- Buttons to search events and to enable gps search-->
         <ion-button expand="block" (click)="goToEvents()">Search Events</ion-button>

@@ -11,7 +11,7 @@ export class TicketmasterService {
 
   constructor(private http: HttpClient) {}
 
-  getEventsByLocation(location: string): Observable<any> {
+  getEventsByLocation(location: string, genre?: any): Observable<any> {
     const params = new HttpParams()
       .set('apikey', this.apiKey)
       .set('city', location);
