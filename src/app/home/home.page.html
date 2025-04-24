@@ -1,26 +1,37 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>HOME</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
+  <div class="search-box">
+    <ion-card class="search-card">
+      <ion-card-header>
+        <ion-card-title>Find Events</ion-card-title>
+      </ion-card-header>
+      
+      <!--Manual location search-->
+      <ion-card-content>
+        <ion-item>
+          <ion-input
+            placeholder="Where to?"
+            [(ngModel)]="manualLocation"
+            clearInput
+          ></ion-input>
+        </ion-item>
 
-  <ion-text>
-    <h2>Find events near you</h2>
-  </ion-text>
+        <!-- Date Pickers Row -->
+        <div class="date-row">
+          <ion-item class="date-item">
+            <ion-label position="stacked">Start Date</ion-label>
+            <ion-datetime presentation="date" [(ngModel)]="startDate"></ion-datetime>
+          </ion-item>
 
-  <!-- Request location access -->
-  <ion-button expand="block" (click)="getLocation()">Use My Location</ion-button>
+          <ion-item class="date-item">
+            <ion-label position="stacked">End Date</ion-label>
+            <ion-datetime presentation="date" [(ngModel)]="endDate"></ion-datetime>
+          </ion-item>
+        </div>
 
-  <ion-text class="ion-margin-top ion-margin-bottom">
-    <p>Or search for a location manually:</p>
-  </ion-text>
-
-  <!-- Fallback manual location search -->
-  <ion-item>
-    <ion-input placeholder="Enter a city or town" [(ngModel)]="manualLocation"></ion-input>
-  </ion-item>
-  <ion-button expand="block" (click)="searchManualLocation()">Search</ion-button>
-
+        <!-- Buttons to search events and to enable gps search-->
+        <ion-button expand="block" (click)="goToEvents()">Search Events</ion-button>
+        <ion-button expand="block" fill="outline" (click)="getLocation()">Use My Location</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
