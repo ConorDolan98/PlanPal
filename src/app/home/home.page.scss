@@ -1,4 +1,4 @@
-
+//Stling on card so it is dynamically sized
 .date-row {
   display: flex;
   gap: 16px;
@@ -10,3 +10,12 @@
   flex: 1;
   min-width: 140px;
 }
+
+//styling for search card
+.search-card {
+  padding: 16px;
+  margin-top: 20px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+

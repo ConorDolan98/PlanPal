@@ -5,9 +5,9 @@ import {
   IonCardTitle, IonCardContent, IonButton, IonGrid, IonRow, IonCol, IonText, IonCardSubtitle, IonIcon } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { TicketmasterService } from '../services/ticketmaster.service';
-//import { EventbriteService } from '../services/eventbrite.service';
+import { EventbriteService } from '../services/eventbrite.service';
 import { FavouritesService } from '../services/favourites.service';
-import { ToastController } from '@ionic/angular'
+import { ToastController } from '@ionic/angular'//pop up messages
 
 @Component({
   selector: 'app-events',
@@ -29,7 +29,7 @@ export class EventsPage implements OnInit {
 
   constructor(
     private ticketmasterService: TicketmasterService,
-    //private eventbriteService: EventbriteService,
+    private eventbriteService: EventbriteService,
     private favouritesService: FavouritesService,
     private toastController: ToastController,
 
@@ -37,40 +37,24 @@ export class EventsPage implements OnInit {
   ) {}
 
   //ngOnInit outputs data to cards
-  ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.location = params['location'] || 'Dublin';
-      this.genre = params['genre'] || '';
-  
-      this.ticketmasterService.getEventsByLocation(this.location, this.genre).subscribe(res => {
-        const allEvents = res._embedded?.events || [];
-        this.ticketmasterEvents = this.filterEventsByGenre(allEvents);
-      });
+ngOnInit() {
+  this.route.queryParams.subscribe(params => {
+    this.location = params['location'] || 'Dublin';
+    this.genre = params['genre'] || '';
+
+    // Ticketmaster Events
+    this.ticketmasterService.getEventsByLocation(this.location, this.genre).subscribe(res => {
+      const allEvents = res._embedded?.events || [];
+      this.ticketmasterEvents = this.filterEventsByGenre(allEvents);
     });
-  }
 
-
-  // getTicketmasterEvents method sort by location
-  getTicketmasterEvents() {
-    this.ticketmasterService.getEventsByLocation(this.location).subscribe({
-      next: (res: any) => {
-        this.ticketmasterEvents = res._embedded?.events || [];
-        console.log('Ticketmaster:', this.ticketmasterEvents);
-      },
-      error: err => console.error('Ticketmaster API error:', err)
-    });
-  }
-
-  /*
-  // getEventbriteEvents method sort by location
-  getEventbriteEvents() {
-    this.eventbriteService.getEventsByLocation('Dublin').subscribe(res => {
-      console.log('Eventbrite:', res);
+    // Eventbrite Events (only by location)
+    this.eventbriteService.getEvents(this.location).subscribe(res => {
       this.eventbriteEvents = res.events || [];
+      console.log('Eventbrite Events:', this.eventbriteEvents);
     });
-    
-  }
-    */
+  });
+}
   addToFavourites(event: any) {
     this.favouritesService.addFavourite(event);
     this.toastController.create({
